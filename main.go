@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"os"
 
-	//"path"
+	"path"
 	"strconv"
 
 	"github.com/gorilla/mux"
@@ -63,18 +63,17 @@ func handleRequests() {
 	myRouter.HandleFunc(version+"/affirmation/{id}", returnSingleAffirmation)
 	myRouter.HandleFunc(version+"/random", returnRandomAffirmation)
 
-	port := os.Getenv("PORT")
-	log.Fatal(http.ListenAndServe(":"+port, myRouter))
+	log.Fatal(http.ListenAndServe(":8080", myRouter))
 }
 
-//func Version(context echo.Context) error {
-//return context.JSON(http.StatusOK, map[string]interface{}{"version": 2})
-//}
+func Version(context echo.Context) error {
+	return context.JSON(http.StatusOK, map[string]interface{}{"version": 2})
+}
 
 func main() {
 	fmt.Println("This is an API!")
 	server := echo.New()
-	//server.GET(path.Join("/"), Version)
+	server.GET(path.Join("/"), Version)
 
 	godotenv.Load()
 	port := os.Getenv("PORT")
