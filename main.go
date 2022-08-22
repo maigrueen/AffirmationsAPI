@@ -6,9 +6,13 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"os"
+	"path"
 	"strconv"
 
 	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
+	"github.com/labstack/echo"
 )
 
 func homePage(w http.ResponseWriter, r *http.Request) {
@@ -63,6 +67,16 @@ func handleRequests() {
 
 func main() {
 	fmt.Println("This is an API!")
+	server := echo.New()
+	server.GET(path.Join("/"), Version)
+
+	godotenv.Load()
+	port := os.Getenv("PORT")
+
+	address := fmt.Sprintf("%s:%s", "0.0.0.0", port)
+	fmt.Println(address)
+	server.Start(address)
+
 	Affirmations = []Affirmation{
 		Affirmation{Id: "1", Content: "Everything I need is within myself."},
 		Affirmation{Id: "2", Content: "I accept myself exactly as I am."},
@@ -134,4 +148,8 @@ func main() {
 		Affirmation{Id: "68", Content: "Everyone is the confirmation of the possiblities of the universe, and so am I."},
 	}
 	handleRequests()
+}
+
+func Version(context echo.Context) error {
+	return context.JSON(http.StatusOK, map[string]interface{}{"version": 2})
 }
