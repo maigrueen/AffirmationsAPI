@@ -62,6 +62,7 @@ func handleRequests() {
 }
 
 func main() {
+	fmt.Println("This is an API!")
 	Affirmations = []Affirmation{
 		Affirmation{Id: "1", Content: "Everything I need is within myself."},
 		Affirmation{Id: "2", Content: "I accept myself exactly as I am."},
